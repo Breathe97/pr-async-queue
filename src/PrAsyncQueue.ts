@@ -67,7 +67,7 @@ export class PrAsyncQueue {
 
     // 设置超时
     const timer = setTimeout(() => {
-      reject(`func:${key} is timeout.`)
+      reject(new Error(`func:${key} is timeout.`))
     }, timeout)
 
     func()
