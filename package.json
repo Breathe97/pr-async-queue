@@ -29,10 +29,10 @@
   "private": false,
   "author": "Breathe",
   "keywords": [
-    "pr-ws"
+    "pr-async-queue"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Breathe97/pr-ws"
+    "url": "https://github.com/Breathe97/pr-async-queue"
   }
 }
