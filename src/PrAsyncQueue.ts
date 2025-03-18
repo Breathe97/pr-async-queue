@@ -57,7 +57,7 @@ export class PrAsyncQueue {
   }
 
   // 触发事件
-  #emitNext = () => {
+  #emitNext = async () => {
     const length = this.queue.length
     if (length === 0) return
     const index = length - 1
@@ -70,7 +70,7 @@ export class PrAsyncQueue {
       reject(new Error(`func:${key} is timeout.`))
     }, timeout)
 
-    func()
+    await func()
       .then(resolve)
       .catch(reject)
       .finally(() => {
