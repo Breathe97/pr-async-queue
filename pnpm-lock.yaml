@@ -7,10 +7,6 @@ settings:
 importers:
 
   .:
-    dependencies:
-      pr-tools:
-        specifier: ^1.5.1
-        version: 1.5.1
     devDependencies:
       typescript:
         specifier: ^5.8.2
@@ -559,9 +555,6 @@ packages:
   postcss@8.5.3:
     resolution: {integrity: sha512-dle9A3yYxlBSrt8Fu+IpjGT8SY8hN0mlaA6GY8t0P5PjIOZemULz/E2Bnm/2dcUOena75OTNkHI76uZBNUUq3A==}
     engines: {node: ^10 || ^12 || >=14}
-
-  pr-tools@1.5.1:
-    resolution: {integrity: sha512-/+mnoSSJUlCsjifPcxjM1Q8MYWxF8NXbSd5JnYHminpVvb/lO/dMLs9CwiqSjmEIHWnWQRWLKpP0aaajtK59EQ==}
 
   punycode@2.3.1:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
@@ -1155,8 +1148,6 @@ snapshots:
       nanoid: 3.3.10
       picocolors: 1.1.1
       source-map-js: 1.2.1
-
-  pr-tools@1.5.1: {}
 
   punycode@2.3.1: {}
 
