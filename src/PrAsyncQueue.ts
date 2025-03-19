@@ -1,5 +1,3 @@
-import { uuid } from 'pr-tools'
-
 interface PrAsyncQueueItem {
   key: string
   func: () => Promise<any>
@@ -16,6 +14,8 @@ interface Options {
 export class PrAsyncQueue {
   queue: PrAsyncQueueItem[] = []
 
+  activeIndex = 0
+
   activePromise: PrAsyncQueueItem | undefined
 
   options = {
@@ -26,6 +26,11 @@ export class PrAsyncQueue {
     this.options = { ...options, timeout: 6 * 1000 }
   }
 
+  #createKey = () => {
+    this.activeIndex = this.activeIndex + 1
+    return `${this.activeIndex}`
+  }
+
   /**
    * 添加
    * @param func 待执行函数
@@ -33,9 +38,8 @@ export class PrAsyncQueue {
    */
   add = (func: () => Promise<any>, options: Options = {}) => {
     return new Promise(async (resolve, reject) => {
-      const _options = { key: uuid(), ...this.options, ...options }
-
-      const { key, timeout } = _options
+      const timeout = options.timeout || this.options.timeout
+      const key = options.key || this.#createKey()
 
       // 判断是否已经存在该事件
       {
