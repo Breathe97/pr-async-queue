@@ -33,7 +33,7 @@ export class PrAsyncQueue {
    */
   add = (func: () => Promise<any>, options: Options = {}) => {
     return new Promise(async (resolve, reject) => {
-      const _options = { ...this.options, key: uuid(), ...options }
+      const _options = { key: uuid(), ...this.options, ...options }
 
       const { key, timeout } = _options
 
