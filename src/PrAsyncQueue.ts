@@ -14,6 +14,7 @@ interface Options {
 export class PrAsyncQueue {
   queue: PrAsyncQueueItem[] = []
 
+  timer = 0
   activeIndex = 0
 
   activePromise: PrAsyncQueueItem | undefined
@@ -40,7 +41,7 @@ export class PrAsyncQueue {
     return new Promise(async (resolve, reject) => {
       const timeout = options.timeout || this.options.timeout
       const key = options.key || this.#createKey()
-
+      console.log('\x1b[38;2;0;151;255m%c%s\x1b[0m', 'color:#0097ff;', `------->Breathe: this.queue`, this.queue)
       // 判断是否已经存在该事件
       {
         const index = this.queue.findIndex((item) => item.key === key)
@@ -56,6 +57,14 @@ export class PrAsyncQueue {
         this.#emitNext()
       }
     })
+  }
+
+  /**
+   * 清除全部事件
+   */
+  clear = () => {
+    this.queue = []
+    clearTimeout(this.timer)
   }
 
   /**
@@ -77,8 +86,9 @@ export class PrAsyncQueue {
     const { key, func, resolve, reject, timeout } = this.activePromise
 
     // 设置超时
-    const timer = setTimeout(() => {
+    this.timer = setTimeout(() => {
       reject(new Error(`func:${key} is timeout.`))
+      this.#emitNext() // 再次触发
     }, timeout)
 
     await func()
@@ -88,7 +98,7 @@ export class PrAsyncQueue {
         // console.log('\x1b[38;2;0;151;255m%c%s\x1b[0m', 'color:#0097ff;', `------->Breathe: promiseQueue finally:${key}`, this.activePromise)
         // 移除
         {
-          clearTimeout(timer)
+          clearTimeout(this.timer)
           this.activePromise = undefined
 
           this.#remove(key)
