@@ -20,16 +20,11 @@ export class PrAsyncQueue {
   activePromise: PrAsyncQueueItem | undefined
 
   options = {
-    timeout: 6 * 1000
+    timeout: 0
   }
 
   constructor(options: Options = {}) {
-    this.options = { ...options, timeout: 6 * 1000 }
-  }
-
-  #createKey = () => {
-    this.activeIndex = this.activeIndex + 1
-    return `${this.activeIndex}`
+    this.options = { timeout: 0, ...options }
   }
 
   /**
@@ -66,6 +61,11 @@ export class PrAsyncQueue {
     clearTimeout(this.timer)
   }
 
+  #createKey = () => {
+    this.activeIndex = this.activeIndex + 1
+    return `${this.activeIndex}`
+  }
+
   /**
    * 移除事件
    * @param key
@@ -84,11 +84,13 @@ export class PrAsyncQueue {
     this.activePromise = info
     const { key, func, resolve, reject, timeout } = this.activePromise
 
-    // 设置超时
-    this.timer = setTimeout(() => {
-      reject(new Error(`func:${key} is timeout.`))
-      this.#emitNext() // 再次触发
-    }, timeout)
+    if (timeout) {
+      // 设置超时
+      this.timer = setTimeout(() => {
+        reject(`pr-async-queue: ${key} is timeout.`)
+        this.#emitNext() // 再次触发
+      }, timeout)
+    }
 
     await func()
       .then(resolve)
@@ -99,7 +101,6 @@ export class PrAsyncQueue {
         {
           clearTimeout(this.timer)
           this.activePromise = undefined
-
           this.#remove(key)
         }
         this.#emitNext() // 再次触发
