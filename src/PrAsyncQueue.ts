@@ -65,6 +65,13 @@ export class PrAsyncQueue {
     clearTimeout(this.timer)
   }
 
+  /**
+   * 重试
+   */
+  retry = () => {
+    this.#emitNext()
+  }
+
   #createKey = () => {
     this.activeIndex = this.activeIndex + 1
     return `${this.activeIndex}`
