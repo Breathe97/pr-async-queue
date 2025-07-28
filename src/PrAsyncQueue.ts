@@ -61,6 +61,7 @@ export class PrAsyncQueue {
    */
   clear = () => {
     this.queue = []
+    this.activePromise = undefined
     clearTimeout(this.timer)
   }
 
